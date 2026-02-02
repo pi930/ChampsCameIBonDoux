@@ -13,7 +13,7 @@ return new class extends Migration
 
             // clé étrangère vers la table "panier"
             $table->foreignId('panier_id')
-                  ->constrained('panier')
+                  ->constrained('paniers')
                   ->onDelete('cascade');
 
             // clé étrangère vers la table "produits_vendre"
