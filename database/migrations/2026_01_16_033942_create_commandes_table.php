@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('commandes', function (Blueprint $table) {
         $table->id();
         $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-        $table->foreignId('panier_id')->constrained('panier')->onDelete('cascade');
+        $table->foreignId('panier_id')->constrained('paniers')->onDelete('cascade');
         $table->string('telephone')->nullable();
         $table->string('statut')->default('en_attente');
         $table->decimal('total', 10, 2)->default(0);
