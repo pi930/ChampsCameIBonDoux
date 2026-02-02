@@ -16,7 +16,8 @@
 
     @foreach($commandes as $c)
     <tr>
-        <td>{{ $c->user->prenom }} {{ $c->user->nom }}</td>
+        <td>{{ $c->user->name }}</td>
+
 
         <td>
             @foreach($c->panier->produits as $p)

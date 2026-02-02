@@ -12,7 +12,7 @@
     <label class="flex items-center space-x-3 p-3 border rounded hover:bg-gray-50">
         <input type="checkbox" name="produits[]" value="{{ $produit->id }}"
                class="h-5 w-5 text-blue-600">
-
+        
         <div class="flex flex-col">
             <span class="text-lg font-semibold">{{ $produit->nom }}</span>
             <span class="text-sm text-gray-600">{{ $produit->prix }} € / {{ $produit->unite }}</span>

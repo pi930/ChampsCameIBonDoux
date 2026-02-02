@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use App\Models\Semi; 
 use App\Observers\SemisObserver;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,7 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-       // Semi::observe(SemisObserver::class);
-    
+       if (config('app.env') === 'production') { URL::forceScheme('https'); }  
 }
 }
