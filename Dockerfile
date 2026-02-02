@@ -1,11 +1,12 @@
 FROM php:8.3-apache
 
+# Dossier de travail
 WORKDIR /var/www/html
 
 # Nettoyer le dossier Apache par défaut
 RUN rm -rf /var/www/html/*
 
-# Installer extensions PHP nécessaires à Laravel + PostgreSQL
+# Installer les extensions PHP nécessaires à Laravel + PostgreSQL
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     unzip \
@@ -15,10 +16,13 @@ RUN apt-get update && apt-get install -y \
 # Activer mod_rewrite pour Laravel
 RUN a2enmod rewrite
 
-# Copier la config Apache
+# Copier la configuration Apache
 COPY ./apache.conf /etc/apache2/sites-available/000-default.conf
 
-# Copier le projet
+# Activer la configuration Apache (ligne manquante qui causait le "Not Found")
+RUN a2ensite 000-default.conf
+
+# Copier le projet Laravel
 COPY . /var/www/html
 
 # Installer Composer
@@ -34,6 +38,5 @@ RUN php artisan key:generate
 # Donner les permissions nécessaires
 RUN chown -R www-data:www-data /var/www/html
 
-# Port exposé par Apache
-EXPOSE 80
+# Exposer le port Apache
 
