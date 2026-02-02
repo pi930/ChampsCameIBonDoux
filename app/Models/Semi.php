@@ -12,7 +12,6 @@ class Semi extends Model
         'produit_id',
         'date_semis',
         'quantite',
-        'image',
     ];
 
     public function produit()

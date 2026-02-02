@@ -51,4 +51,6 @@ auth.json
 # -----------------------------------------
 Homestead.json
 Homestead.yaml
+!storage/app/public/produits/
+!storage/app/public/produits/**
 

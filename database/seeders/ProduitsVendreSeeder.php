@@ -27,7 +27,7 @@ class ProduitsVendreSeeder extends Seeder
                 'categorie' => 'Légume',         // catégorie par défaut
                 'unite' => 'pièce',              // unité par défaut
                 'description' => 'Produit cultivé disponible à la vente.',
-                'image' => $file,                // chemin vers l’image
+                'image' => null,
                 'actif' => true,                 // visible dans l’admin
             ]);
         }

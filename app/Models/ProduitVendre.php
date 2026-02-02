@@ -15,7 +15,6 @@ class ProduitVendre extends Model
         'categorie',
         'unite',
         'description',
-        'image',
         'actif',
     ];
 
