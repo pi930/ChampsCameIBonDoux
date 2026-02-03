@@ -7,6 +7,7 @@ use App\Models\Commande;
 use App\Models\Panier;
 use App\Models\RendezVousDisponible;
 use App\Models\ProduitVendre;
+use App\Models\User;
 use Stripe\Stripe;
 use Stripe\Checkout\Session as StripeSession;
 
@@ -32,9 +33,8 @@ class CommandeController extends Controller
         $request->validate([
             'formule' => 'required|in:simple,4_paniers',
         ]);
-        
-        Stripe::setApiKey(config('services.stripe.secret'));
 
+        Stripe::setApiKey(config('services.stripe.secret'));
 
         $user = auth()->user();
         $ids = session('panier', []);
@@ -44,72 +44,50 @@ class CommandeController extends Controller
             return redirect()->route('panier.construire')->with('error', 'Panier ou rendez-vous manquant.');
         }
 
-        Stripe::setApiKey(config('services.stripe.secret'));
+        $priceId = $request->formule === 'simple'
+            ? env('STRIPE_PRICE_SIMPLE')
+            : env('STRIPE_PRICE_4_PANIERS');
 
-        if ($request->formule === 'simple') {
-    $priceId = env('STRIPE_PRICE_SIMPLE');
-    $mode = 'payment';
-} elseif ($request->formule === '4_paniers') {
-    $priceId = env('STRIPE_PRICE_4_PANIERS');
-    $mode = 'payment'; // ce n'est PAS un abonnement
-}
+        $successUrl = env('STRIPE_SUCCESS_URL')
+            . '?session_id={CHECKOUT_SESSION_ID}'
+            . '&formule=' . $request->formule
+            . '&panier=' . implode(',', $ids)
+            . '&rendezvous=' . $rendezvousId;
 
         $session = StripeSession::create([
             'payment_method_types' => ['card'],
-            'mode' => $mode,
+            'mode' => 'payment',
             'line_items' => [[
                 'price' => $priceId,
                 'quantity' => 1,
             ]],
             'customer_email' => $user->email,
-            'success_url' => env('STRIPE_SUCCESS_URL') . '?session_id={CHECKOUT_SESSION_ID}',
+            'success_url' => $successUrl,
             'cancel_url' => env('STRIPE_CANCEL_URL'),
-        ]);
-
-        session([
-            'formule' => $request->formule,
-            'stripe_session_id' => $session->id,
         ]);
 
         return redirect($session->url);
     }
-    public function index()
-{
-    $user = auth()->user();
-
-    // Charger les commandes + panier + produits du panier
-    $commandes = Commande::where('user_id', $user->id)
-        ->with([
-            'panier.produits',      // produits du panier
-            'rendezVous'            // rendez-vous associé
-        ])
-        ->orderBy('created_at', 'desc')
-        ->get();
-
-    return view('commandes.index', compact('user', 'commandes'));
-}
-
 
     public function success(Request $request)
     {
-        $user = auth()->user();
+        Stripe::setApiKey(config('services.stripe.secret'));
 
-        $ids = session('panier', []);
-        $rendezvousId = session('rendezvous_id');
-        $formule = session('formule');
+        $sessionId = $request->get('session_id');
+        $session = StripeSession::retrieve($sessionId);
 
-        if (empty($ids) || !$rendezvousId || !$formule) {
-            return redirect('/')->with('error', 'Données de commande manquantes.');
+        if ($session->payment_status !== 'paid') {
+            return redirect('/')->with('error', 'Paiement non confirmé.');
         }
 
-        if ($formule === 'simple') {
-    $panierTotal = 30;
-} elseif ($formule === '4_paniers') {
-    $panierTotal = 105;
-} else {
-    $panierTotal = 30; // fallback
-}
+        $email = $session->customer_email;
+        $user = User::where('email', $email)->firstOrFail();
 
+        $formule = $request->get('formule');
+        $ids = explode(',', $request->get('panier'));
+        $rendezvousId = $request->get('rendezvous');
+
+        $panierTotal = $formule === '4_paniers' ? 105 : 30;
 
         $panier = Panier::create([
             'user_id' => $user->id,
@@ -126,28 +104,20 @@ class CommandeController extends Controller
             'formule' => $formule,
             'rendez_vous_disponible_id' => $rendezvousId,
         ]);
+
         if ($formule === '4_paniers') {
-
             $rendezvous = RendezVousDisponible::find($rendezvousId);
+            $dateDepart = \Carbon\Carbon::parse($rendezvous->date);
 
-    // Date du rendez-vous initial
-    $dateDepart = \Carbon\Carbon::parse($rendezvous->date);
-
-    for ($i = 1; $i <= 4; $i++) {
-
-        $datePanier = $dateDepart->copy()->addWeeks($i);
-
-        Panier::create([
-            'user_id' => $user->id,
-            'total' => 0, // panier gratuit
-            'date_disponible' => $datePanier->format('Y-m-d'),
-            'type' => 'panier_programme',
-        ]);
-    }
-}
-
-
-        session()->forget(['panier', 'rendezvous_id', 'formule', 'stripe_session_id']);
+            for ($i = 1; $i <= 4; $i++) {
+                Panier::create([
+                    'user_id' => $user->id,
+                    'total' => 0,
+                    'date_disponible' => $dateDepart->copy()->addWeeks($i)->format('Y-m-d'),
+                    'type' => 'panier_programme',
+                ]);
+            }
+        }
 
         return view('paiements.success');
     }

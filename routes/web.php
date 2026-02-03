@@ -47,10 +47,6 @@ Route::middleware(['auth'])->group(function () {
     // Commandes utilisateur
     Route::get('/mes-commandes', [CommandeController::class, 'index'])->name('commandes.index');
 
-    // Gestion paiement
-      Route::get('/paiement', [PaiementController::class, 'index']) ->name('paiement');
-        Route::post('/paiement', [PaiementController::class, 'process'])
-    ->name('paiement.process');
     // Panier
    
     Route::post('/rendez-vous', [RendezVousController::class, 'choisir'])
