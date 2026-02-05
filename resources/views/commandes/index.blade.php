@@ -45,7 +45,7 @@
                     <p class="mb-2">
                         <strong>Statut :</strong>
                         <span class="font-semibold">
-                            {{ ucfirst($commande->statut) }}
+                            {{ ucfirst($commande->statut ?? '—') }}
                         </span>
                     </p>
                     <p class="mb-2">
