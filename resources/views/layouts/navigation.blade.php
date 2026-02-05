@@ -10,15 +10,13 @@
                 </a>
             </div>
 
-            <!-- Right side -->
+            <!-- Right side (desktop) -->
             <div class="hidden sm:flex sm:items-center space-x-6">
 
-                <!-- Panier -->
                 <a href="{{ route('panier.recap') }}" class="text-3xl hover:opacity-70">
                     🧺
                 </a>
 
-                <!-- Menu utilisateur -->
                 @guest
                     <a href="{{ route('login') }}" class="text-gray-700 hover:text-green-700">Connexion</a>
                     <a href="{{ route('register') }}" class="text-gray-700 hover:text-green-700">Inscription</a>
@@ -26,7 +24,6 @@
 
                 @auth
                     <div class="relative" x-data="{ userMenu: false }">
-
                         <button @click="userMenu = !userMenu" class="text-3xl hover:opacity-70">
                             👤
                         </button>
@@ -40,7 +37,6 @@
                             <a href="{{ route('contact') }}" class="block py-1 hover:text-green-700">Contact</a>
                             <a href="{{ route('rendezvous.index') }}" class="block py-1 hover:text-green-700">Rendez-vous</a>
 
-
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button class="block w-full text-left py-1 text-red-600 hover:text-red-800">
@@ -49,7 +45,6 @@
                             </form>
 
                         </div>
-
                     </div>
                 @endauth
 
@@ -61,6 +56,28 @@
             </div>
 
         </div>
+    </div>
+
+    <!-- Mobile menu (déplacé ici, en dehors du header) -->
+    <div x-show="open" class="sm:hidden px-4 pb-4 space-y-2">
+        <a href="{{ route('panier.recap') }}" class="block text-xl">🧺 Panier</a>
+
+        @guest
+            <a href="{{ route('login') }}" class="block text-gray-700">Connexion</a>
+            <a href="{{ route('register') }}" class="block text-gray-700">Inscription</a>
+        @endguest
+
+        @auth
+            <a href="{{ route('profile.edit') }}" class="block">Profil</a>
+            <a href="{{ route('commandes.index') }}" class="block">Commandes</a>
+            <a href="{{ route('contact') }}" class="block">Contact</a>
+            <a href="{{ route('rendezvous.index') }}" class="block">Rendez-vous</a>
+
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button class="block text-red-600">Déconnexion</button>
+            </form>
+        @endauth
     </div>
 
 </nav>
