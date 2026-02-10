@@ -5,6 +5,11 @@
     <h2 class="text-2xl font-bold mb-6 text-center">
         Merci pour votre commande !
     </h2>
+    @if(!$commande)
+    <p class="text-center text-gray-600">Vous n’avez encore passé aucune commande.</p>
+    </x-app-layout>
+    @php return; @endphp
+@endif
 
     {{-- Informations personnelles --}}
     <div class="p-4 border rounded-lg bg-gray-50 mb-8">
