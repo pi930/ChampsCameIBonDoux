@@ -1,20 +1,60 @@
 <x-app-layout>
 
-<div class="max-w-3xl mx-auto py-10 text-center">
+<div class="max-w-4xl mx-auto mt-10 bg-white shadow-md rounded-lg p-6">
 
-    <h1 class="text-3xl font-bold mb-4">Merci pour votre commande !</h1>
+    <h2 class="text-2xl font-bold mb-6 text-center">
+        Merci pour votre commande !
+    </h2>
 
-    <p class="text-lg mb-6">
-        Votre paiement a été accepté.  
-        Vous recevrez votre panier à l’adresse :
-        <br>
-        <strong>Impasse du Mercantour, Nice Lingostière</strong>
-    </p>
+    <div class="border rounded-lg p-4 bg-gray-50">
 
-    <a href="{{ route('dashboard') }}"
-       class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
-        Retour à mon espace
-    </a>
+        <h3 class="text-xl font-semibold mb-3">Commande #{{ $commande->id }}</h3>
+
+        <p class="mb-2"><strong>Total :</strong>
+            {{ number_format($commande->total, 2, ',', ' ') }} €
+        </p>
+
+        <p class="mb-2"><strong>Formule :</strong>
+            @if($commande->formule === '4_paniers')
+                4 paniers (1 mois) — 105 €
+            @else
+                Panier simple — 30 €
+            @endif
+        </p>
+
+        @if($commande->rendezVous)
+            <p class="mb-2">
+                <strong>Rendez-vous :</strong>
+                {{ \Carbon\Carbon::parse($commande->rendezVous->date)->format('d/m/Y') }}
+                à
+                {{ substr($commande->rendezVous->heure, 0, 5) }}
+            </p>
+        @endif
+
+        @if($commande->panier && $commande->panier->produits->isNotEmpty())
+            <div class="mt-4">
+                <h4 class="font-semibold mb-2">Produits :</h4>
+
+                <ul class="list-disc pl-6 space-y-1">
+                    @foreach($commande->panier->produits as $produit)
+                        <li>
+                            {{ $produit->nom }}
+                            — {{ number_format($produit->pivot->prix, 2, ',', ' ') }} €
+                            × {{ $produit->pivot->quantite }}
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+    </div>
+
+    <div class="text-center mt-8">
+        <a href="{{ route('dashboard') }}"
+           class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+            Retour à mon espace
+        </a>
+    </div>
 
 </div>
 

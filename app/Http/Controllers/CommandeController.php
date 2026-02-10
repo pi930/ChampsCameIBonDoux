@@ -70,57 +70,62 @@ class CommandeController extends Controller
     }
 
     public function success(Request $request)
-    {
-        Stripe::setApiKey(config('services.stripe.secret'));
+{
+    Stripe::setApiKey(config('services.stripe.secret'));
 
-        $sessionId = $request->get('session_id');
-        $session = StripeSession::retrieve($sessionId);
+    $sessionId = $request->get('session_id');
+    $session = StripeSession::retrieve($sessionId);
 
-        if ($session->payment_status !== 'paid') {
-            return redirect('/')->with('error', 'Paiement non confirmé.');
-        }
-
-        $email = $session->customer_email;
-        $user = User::where('email', $email)->firstOrFail();
-
-        $formule = $request->get('formule');
-        $ids = explode(',', $request->get('panier'));
-        $rendezvousId = $request->get('rendezvous');
-
-        $panierTotal = $formule === '4_paniers' ? 105 : 30;
-
-        $panier = Panier::create([
-            'user_id' => $user->id,
-            'total' => $panierTotal,
-        ]);
-
-        $panier->produits()->sync($ids);
-
-        Commande::create([
-            'user_id' => $user->id,
-            'panier_id' => $panier->id,
-            'telephone' => $user->telephone,
-            'total' => $panierTotal,
-            'formule' => $formule,
-            'rendez_vous_disponible_id' => $rendezvousId,
-        ]);
-
-        if ($formule === '4_paniers') {
-            $rendezvous = RendezVousDisponible::find($rendezvousId);
-            $dateDepart = \Carbon\Carbon::parse($rendezvous->date);
-
-            for ($i = 1; $i <= 4; $i++) {
-                Panier::create([
-                    'user_id' => $user->id,
-                    'total' => 0,
-                    'date_disponible' => $dateDepart->copy()->addWeeks($i)->format('Y-m-d'),
-                    'type' => 'panier_programme',
-                ]);
-            }
-        }
-
-        return view('paiements.success');
+    if ($session->payment_status !== 'paid') {
+        return redirect('/')->with('error', 'Paiement non confirmé.');
     }
+
+    $email = $session->customer_email;
+    $user = User::where('email', $email)->firstOrFail();
+
+    $formule = $request->get('formule');
+    $ids = explode(',', $request->get('panier'));
+    $rendezvousId = $request->get('rendezvous');
+
+    $panierTotal = $formule === '4_paniers' ? 105 : 30;
+
+    // Création du panier
+    $panier = Panier::create([
+        'user_id' => $user->id,
+        'total' => $panierTotal,
+    ]);
+
+    $panier->produits()->sync($ids);
+
+    // Création de la commande + récupération dans une variable
+    $commande = Commande::create([
+        'user_id' => $user->id,
+        'panier_id' => $panier->id,
+        'telephone' => $user->telephone,
+        'total' => $panierTotal,
+        'formule' => $formule,
+        'rendez_vous_disponible_id' => $rendezvousId,
+    ]);
+
+    // Gestion des paniers programmés
+    if ($formule === '4_paniers') {
+        $rendezvous = RendezVousDisponible::find($rendezvousId);
+        $dateDepart = \Carbon\Carbon::parse($rendezvous->date);
+
+        for ($i = 1; $i <= 4; $i++) {
+            Panier::create([
+                'user_id' => $user->id,
+                'total' => 0,
+                'date_disponible' => $dateDepart->copy()->addWeeks($i)->format('Y-m-d'),
+                'type' => 'panier_programme',
+            ]);
+        }
+    }
+
+    // ENFIN on envoie la commande à la vue
+    return view('paiements.success', compact('commande'));
+}
+
 
     public function cancel()
     {
