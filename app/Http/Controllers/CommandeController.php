@@ -13,23 +13,18 @@ use Stripe\Checkout\Session as StripeSession;
 
 class CommandeController extends Controller
 {   
-    public function index()
+   public function index()
 {
     $user = auth()->user();
 
-    // On récupère la dernière commande payée de l'utilisateur
     $commande = Commande::where('user_id', $user->id)
-        ->with(['panier.produits', 'rendezVous', 'user'])
+        ->with(['user', 'panier.produits', 'rendezVous'])
         ->latest()
         ->first();
 
-    // Si aucune commande n'existe encore
-    if (!$commande) {
-        return view('commandes.index', ['commande' => null]);
-    }
-
     return view('commandes.index', compact('commande'));
 }
+
  
 
     public function paiement()

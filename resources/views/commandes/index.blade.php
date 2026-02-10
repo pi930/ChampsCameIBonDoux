@@ -3,13 +3,17 @@
 <div class="max-w-4xl mx-auto mt-10 bg-white shadow-md rounded-lg p-6">
 
     <h2 class="text-2xl font-bold mb-6 text-center">
-        Merci pour votre commande !
+        Mes commandes
     </h2>
+
     @if(!$commande)
-    <p class="text-center text-gray-600">Vous n’avez encore passé aucune commande.</p>
-    </x-app-layout>
-    @php return; @endphp
-@endif
+        <p class="text-center text-gray-600">
+            Vous n’avez encore passé aucune commande.
+        </p>
+        </div>
+        </x-app-layout>
+        @php return; @endphp
+    @endif
 
     {{-- Informations personnelles --}}
     <div class="p-4 border rounded-lg bg-gray-50 mb-8">
@@ -59,13 +63,6 @@
             </p>
         @endif
 
-        @if($commande->formule === '4_paniers')
-            <p class="mb-2 text-blue-700 font-semibold">
-                Votre prochain panier sera disponible le
-                {{ \Carbon\Carbon::parse($commande->rendezVous->date)->addWeek()->format('d/m/Y') }}
-            </p>
-        @endif
-
         @if($commande->panier && $commande->panier->produits->isNotEmpty())
             <div class="mt-4">
                 <h4 class="font-semibold mb-2">Produits :</h4>
@@ -74,8 +71,8 @@
                     @foreach($commande->panier->produits as $produit)
                         <li>
                             {{ $produit->nom }}
-                            — {{ number_format($produit->pivot->prix, 2, ',', ' ') }} €
-                            × {{ $produit->pivot->quantite }}
+                            — {{ number_format($produit->pivot->prix ?? 0, 2, ',', ' ') }} €
+                            × {{ $produit->pivot->quantite ?? 1 }}
                         </li>
                     @endforeach
                 </ul>
