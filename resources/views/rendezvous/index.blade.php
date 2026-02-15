@@ -8,7 +8,7 @@
           class="bg-white shadow p-6 rounded-lg space-y-4">
         @csrf
 
-        @foreach($rendezvous as $rdv)
+        @foreach($disponibles as $rdv)
             <label class="flex items-center space-x-3 p-3 border rounded hover:bg-gray-50">
                 <input type="radio" name="rendezvous_id" value="{{ $rdv->id }}" class="h-5 w-5 text-blue-600">
                 <span class="text-lg">
