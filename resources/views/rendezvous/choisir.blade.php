@@ -12,7 +12,8 @@
             <label class="flex items-center space-x-3 p-3 border rounded hover:bg-gray-50">
                 <input type="radio" name="rendezvous_id" value="{{ $d->id }}" required class="h-5 w-5 text-blue-600">
                 <span class="text-lg">
-                    {{ $d->jour }} - {{ $d->heure }}
+                    {{ \Carbon\Carbon::parse($d->date)->translatedFormat('l d F') }}
+                    à {{ $d->heure }}
                 </span>
             </label>
         @endforeach

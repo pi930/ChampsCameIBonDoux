@@ -14,10 +14,13 @@ class RendezVousDisponible extends Model
         'telephone',
         'est_disponible',
     ];
+
+    public $timestamps = false;
+
     public function rendezVous()
-{
-    return $this->hasOne(RendezVous::class, 'rendez_vous_disponible_id');
+    {
+        return $this->hasOne(RendezVous::class, 'rendez_vous_disponible_id');
+    }
 }
 
-}
 
