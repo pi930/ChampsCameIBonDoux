@@ -24,7 +24,7 @@
                     $slot = $slots[$date][$heure] ?? null;
                 @endphp
 
-                <td style="background-color: {{ $slot && $slot->est_disponible ? '#c8f7c5' : '#f7c5c5' }}">
+                <td style="background-color: {{ optional($slot)->est_disponible ? '#c8f7c5' : '#f7c5c5' }}">
 
                     @if($slot)
                         <input type="checkbox"
