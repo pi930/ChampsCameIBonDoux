@@ -19,7 +19,7 @@
         <tr>
             <td><strong>{{ \Carbon\Carbon::parse($date)->translatedFormat('l d F') }}</strong></td>
 
-            @foreach($heures as $heure)
+            @foreach($heures  as $heure)
                 @php
                     $slot = $slots[$date][$heure] ?? null;
                 @endphp
