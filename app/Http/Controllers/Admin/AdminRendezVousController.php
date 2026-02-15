@@ -1,88 +1,61 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\RendezVousDisponible;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AdminRendezVousController extends Controller
 {
- public function index()
-{
-    $creneaux = RendezVousDisponible::all();
+    public function index()
+    {
+        // Générer les 14 prochains jours
+        $dates = collect(range(0, 14))
+            ->map(fn($i) => now()->addDays($i)->toDateString());
 
-    // Jours affichés dans le tableau
-    $jours = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+        // Heures fixes
+        $heures = ['09:00', '10:00', '11:00', '14:00', '15:00'];
 
-    // Heures uniques
-    $heures = $creneaux->pluck('heure')->unique()->sort()->values();
+        // Charger les créneaux existants
+        $slots = [];
+        foreach ($dates as $date) {
+            foreach ($heures as $heure) {
+                $slots[$date][$heure] = RendezVousDisponible::where('date', $date)
+                    ->where('heure', $heure)
+                    ->first();
+            }
+        }
 
-    // Préparation du tableau [Jour][Heure] = slot
-    $slots = [];
-
-    foreach ($creneaux as $c) {
-
-        // Convertit la date en jour EXACT correspondant à ton tableau
-        $jourCarbon = \Carbon\Carbon::parse($c->date)->locale('fr')->dayName;
-        $jourFormat = ucfirst($jourCarbon); // "lundi" → "Lundi"
-
-        $slots[$jourFormat][$c->heure] = $c;
+        return view('admin.rendezvous.index', compact('dates', 'heures', 'slots'));
     }
-
-    return view('admin.rendezvous.index', compact('jours', 'heures', 'slots'));
-}
-
-
 
     public function store(Request $request)
-{
-    if ($request->action === 'create') {
+    {
+        // Création d’un créneau
+        if ($request->action === 'create') {
+            RendezVousDisponible::firstOrCreate([
+                'date' => $request->date,
+                'heure' => $request->heure,
+            ], [
+                'est_disponible' => true
+            ]);
 
-        $request->validate([
-            'jour' => 'required',
-            'heure' => 'required'
-        ]);
+            return back()->with('success', 'Créneau ajouté');
+        }
 
-        // Convertir "Lundi" → une vraie date
-        $date = $this->convertirJourEnDate($request->jour);
+        // Mise à jour des disponibilités
+        $ids = $request->creneaux ?? [];
 
-        RendezVousDisponible::create([
-            'date' => $date,
-            'heure' => $request->heure,
-            'est_disponible' => true,
-            'telephone' => null,
-        ]);
+        // Tout mettre à indisponible
+        RendezVousDisponible::query()->update(['est_disponible' => false]);
 
-        return redirect()->route('admin.rendezvous.index')
-                         ->with('success', 'Créneau débloqué');
+        // Réactiver ceux cochés
+        RendezVousDisponible::whereIn('id', $ids)->update(['est_disponible' => true]);
+
+        return back()->with('success', 'Disponibilités mises à jour');
     }
-
-    // Mise à jour des créneaux existants
-    $ids = $request->creneaux ?? [];
-
-    RendezVousDisponible::query()->update(['est_disponible' => false]);
-    RendezVousDisponible::whereIn('id', $ids)->update(['est_disponible' => true]);
-
-    return redirect()->route('admin.rendezvous.index');
-}
-    private function convertirJourEnDate($jour)
-{
-    $aujourdhui = now();
-    $jourSemaine = match($jour) {
-        'Lundi' => 1,
-        'Mardi' => 2,
-        'Mercredi' => 3,
-        'Jeudi' => 4,
-        'Vendredi' => 5,
-        'Samedi' => 6,
-        'Dimanche' => 0,
-    };
-
-    $dateCible = $aujourdhui->copy()->next($jourSemaine);
-
-    return $dateCible->toDateString();
-
 }
 
-}
+
+
