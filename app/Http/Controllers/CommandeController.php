@@ -13,17 +13,18 @@ use Stripe\Checkout\Session as StripeSession;
 
 class CommandeController extends Controller
 {   
-   public function index()
+   
+{
+    public function index()
 {
     $user = auth()->user();
 
-   $commande = Commande::where('user_id', $user->id)
-    ->with(['user', 'panier.produits', 'rendezVous'])
-    ->latest()
-    ->first();
+    $commande = Commande::where('user_id', $user->id)
+        ->with(['user', 'panier.produits', 'rendezVous'])
+        ->latest()
+        ->first();
 
-    if (!$commande || !$commande->panier) {
-    return view('commandes.index', ['commande' => null]);
+    return view('commandes.index', compact('commande'));
 }
 }
 
