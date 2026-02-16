@@ -17,13 +17,18 @@ class CommandeController extends Controller
 {
     $user = auth()->user();
 
+    // On récupère uniquement les commandes complètes et payées
     $commande = Commande::where('user_id', $user->id)
+        ->whereNotNull('panier_id')
+        ->whereNotNull('rendez_vous_disponible_id')
+        ->where('total', '>', 0)
         ->with(['user', 'panier.produits', 'rendezVous'])
         ->latest()
         ->first();
 
     return view('commandes.index', compact('commande'));
 }
+
 
  
 

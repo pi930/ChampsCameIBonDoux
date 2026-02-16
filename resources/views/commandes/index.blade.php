@@ -3,12 +3,12 @@
 <div class="max-w-4xl mx-auto mt-10 bg-white shadow-md rounded-lg p-6">
 
     <h2 class="text-2xl font-bold mb-6 text-center">
-        Ma dernière commande
+        Ma dernière commande réglée
     </h2>
 
     @if(!$commande)
         <p class="text-center text-gray-600">
-            Vous n’avez encore passé aucune commande.
+            Vous n’avez encore aucune commande réglée.
         </p>
 
         <div class="text-center mt-6">
@@ -79,7 +79,7 @@
                     @foreach($commande->panier->produits as $produit)
                         <li>
                             {{ $produit->nom }}
-                            — {{ number_format($produit->prix, 2, ',', ' ') }} €
+                            — {{ number_format($produit->pivot->prix ?? 0, 2, ',', ' ') }} €
                             × {{ $produit->pivot->quantite ?? 1 }}
                         </li>
                     @endforeach
@@ -99,4 +99,3 @@
 </div>
 
 </x-app-layout>
-
