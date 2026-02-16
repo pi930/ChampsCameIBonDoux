@@ -3,17 +3,25 @@
 <div class="max-w-4xl mx-auto mt-10 bg-white shadow-md rounded-lg p-6">
 
     <h2 class="text-2xl font-bold mb-6 text-center">
-        Mes commandes
+        Ma dernière commande
     </h2>
 
     @if(!$commande)
         <p class="text-center text-gray-600">
             Vous n’avez encore passé aucune commande.
         </p>
+
+        <div class="text-center mt-6">
+            <a href="{{ route('dashboard') }}"
+               class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+                Retour à mon espace
+            </a>
         </div>
-        </x-app-layout>
-        @php return; @endphp
-    @endif
+
+    </div>
+</x-app-layout>
+@php return; @endphp
+@endif
 
     {{-- Informations personnelles --}}
     <div class="p-4 border rounded-lg bg-gray-50 mb-8">
@@ -91,3 +99,4 @@
 </div>
 
 </x-app-layout>
+
