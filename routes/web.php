@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\ProduitCultiverController;
 use App\Http\Controllers\Admin\SemisController;
 use App\Http\Controllers\Admin\ProduitVendreController;
 use App\Http\Controllers\Admin\AdminRendezVousController;
+use App\Http\Controllers\PaiementController;
 
 // Page d’accueil
 Route::get('/', [HomeController::class, 'index'])->name('home');

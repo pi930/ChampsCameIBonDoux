@@ -13,9 +13,7 @@ use Stripe\Checkout\Session as StripeSession;
 
 class CommandeController extends Controller
 {   
-   
-{
-    public function index()
+   public function index()
 {
     $user = auth()->user();
 
@@ -25,7 +23,6 @@ class CommandeController extends Controller
         ->first();
 
     return view('commandes.index', compact('commande'));
-}
 }
 
  
@@ -43,9 +40,7 @@ class CommandeController extends Controller
 
         $adresse = 'Impasse du Mercantour, Nice Lingostière';
 
-        if (!$commande || !$commande->panier) {
-    return view('commandes.index', ['commande' => null]);
-}
+        return view('paiements.index', compact('produits', 'rendezvous', 'adresse'));
     }
 
     public function stripe(Request $request)
