@@ -20,7 +20,7 @@
 
     </div>
 </x-app-layout>
-@php return; @endphp
+    @php return; @endphp
 @endif
 
     {{-- Informations personnelles --}}
@@ -94,6 +94,12 @@
            class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
             Retour à mon espace
         </a>
+    </div>
+
+</div>
+
+</x-app-layout>
+
     </div>
 
 </div>
