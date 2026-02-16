@@ -22,7 +22,9 @@ class CommandeController extends Controller
     ->latest()
     ->first();
 
-    return view('commandes.index', compact('commande'));
+    if (!$commande || !$commande->panier) {
+    return view('commandes.index', ['commande' => null]);
+}
 }
 
  
