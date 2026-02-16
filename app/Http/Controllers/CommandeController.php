@@ -17,10 +17,10 @@ class CommandeController extends Controller
 {
     $user = auth()->user();
 
-    $commande = Commande::where('user_id', $user->id)
-        ->with(['user', 'panier.produits', 'rendezVous'])
-        ->latest()
-        ->first();
+   $commande = Commande::where('user_id', $user->id)
+    ->with(['user', 'panier.produits', 'rendezVous'])
+    ->latest()
+    ->first();
 
     return view('commandes.index', compact('commande'));
 }
@@ -40,7 +40,9 @@ class CommandeController extends Controller
 
         $adresse = 'Impasse du Mercantour, Nice Lingostière';
 
-        return view('paiements.index', compact('produits', 'rendezvous', 'adresse'));
+        if (!$commande || !$commande->panier) {
+    return view('commandes.index', ['commande' => null]);
+}
     }
 
     public function stripe(Request $request)

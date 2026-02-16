@@ -10,10 +10,18 @@
         <p class="text-center text-gray-600">
             Vous n’avez encore passé aucune commande.
         </p>
+
+        <div class="text-center mt-6">
+            <a href="{{ route('dashboard') }}"
+               class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+                Retour à mon espace
+            </a>
         </div>
-        </x-app-layout>
-        @php return; @endphp
-    @endif
+
+    </div>
+</x-app-layout>
+@php return; @endphp
+@endif
 
     {{-- Informations personnelles --}}
     <div class="p-4 border rounded-lg bg-gray-50 mb-8">
@@ -71,7 +79,7 @@
                     @foreach($commande->panier->produits as $produit)
                         <li>
                             {{ $produit->nom }}
-                            — {{ number_format($produit->pivot->prix ?? 0, 2, ',', ' ') }} €
+                            — {{ number_format($produit->prix ?? 0, 2, ',', ' ') }} €
                             × {{ $produit->pivot->quantite ?? 1 }}
                         </li>
                     @endforeach
