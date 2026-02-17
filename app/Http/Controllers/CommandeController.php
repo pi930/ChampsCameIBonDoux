@@ -15,22 +15,12 @@ class CommandeController extends Controller
 {   
    public function index()
 {
-    $user = auth()->user();
+    $commandes = Commande::where('user_id', auth()->id())
+        ->orderBy('created_at', 'desc')
+        ->get();
 
-    // On récupère uniquement les commandes complètes et payées
-    $commande = Commande::where('user_id', $user->id)
-        ->whereNotNull('panier_id')
-        ->whereNotNull('rendez_vous_disponible_id')
-        ->where('total', '>', 0)
-        ->with(['user', 'panier.produits', 'rendezVous'])
-        ->latest()
-        ->first();
-
-    return view('commandes.index', compact('commande'));
+    return view('commandes.index', compact('commandes'));
 }
-
-
- 
 
     public function paiement()
     {

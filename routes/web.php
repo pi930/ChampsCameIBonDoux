@@ -66,7 +66,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/paiement/stripe', [CommandeController::class, 'stripe'])->name('paiement.stripe');
     Route::get('/paiement/success', [CommandeController::class, 'success'])->name('paiement.success'); 
     Route::get('/paiement/cancel', [CommandeController::class, 'cancel'])->name('paiement.cancel');
-
+     
+    Route::get('/commande-recuperee/{id}', [CommandeController::class, 'recuperee'])
+    ->name('commande.recuperee');
     // Rendez-vous utilisateur
     Route::get('/rendezvous', [RendezVousController::class, 'index']) ->name('rendezvous.index');
 });
@@ -111,8 +113,7 @@ Route::post('/produits-vendre', [ProduitVendreController::class, 'store'])
     Route::get('/admin/commandes', [CommandeController::class, 'adminIndex']) ->name('admin.commandes');
 Route::put('/admin/commandes/{id}/statut', [CommandeController::class, 'changerStatut'])
     ->name('admin.commandes.statut');
-Route::get('/commande-recuperee/{id}', [CommandeController::class, 'recuperee'])
-    ->name('commande.recuperee');
+
 
 
 require __DIR__.'/auth.php';
