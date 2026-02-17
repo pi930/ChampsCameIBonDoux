@@ -43,24 +43,26 @@
 
         <td>{{ $c->created_at->format('d/m/Y') }}</td>
 
-        <td>
-            @if($c->statut === 'recupere')
-                <span style="color:green;">Récupérée</span>
-            @else
-                <span style="color:orange;">En attente</span>
-            @endif
-        </td>
+       <td>
+    @if($c->statut_retrait === 'recupere')
+        <span style="color:green;">Récupérée</span>
+    @else
+        <span style="color:orange;">En attente</span>
+    @endif
+</td>
+
+
 
         <td>
             <form action="{{ route('admin.commandes.statut', $c->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
-                @if($c->statut !== 'recupere')
+                @if($c->statut_retrait !== 'recupere')
                     <button name="statut" value="recupere" style="color:green;">Récupéré</button>
                 @endif
 
-                @if($c->statut !== 'attente')
+               @if($c->statut_retrait !== 'attente')
                     <button name="statut" value="attente" style="color:orange;">En attente</button>
                 @endif
             </form>

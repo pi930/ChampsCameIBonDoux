@@ -108,6 +108,7 @@ Route::post('/produits-vendre', [ProduitVendreController::class, 'store'])
         // Récapitulatif commandes
         Route::get('/commandes', [DashboardController::class, 'commandes'])->name('commandes');
     });
+    Route::get('/admin/commandes', [CommandeController::class, 'adminIndex']) ->name('admin.commandes');
 Route::put('/admin/commandes/{id}/statut', [CommandeController::class, 'changerStatut'])
     ->name('admin.commandes.statut');
 Route::get('/commande-recuperee/{id}', [CommandeController::class, 'recuperee'])

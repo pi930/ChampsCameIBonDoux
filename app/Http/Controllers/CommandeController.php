@@ -151,15 +151,33 @@ class CommandeController extends Controller
     {
         return redirect()->route('paiement')->with('error', 'Paiement annulé.');
     }
-    public function changerStatut(Request $request, $id)
+    public function adminIndex()
+{
+    // Commandes payées (statut = 'paye')
+    $commandes = Commande::where('statut', 'paye')
+        ->with(['user', 'panier.produits', 'rendezVous'])
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+    // Paniers programmés
+    $paniers_programmes = Panier::where('type', 'panier_programme')
+        ->with('user')
+        ->orderBy('date_disponible', 'asc')
+        ->get();
+
+    return view('admin.commandes', compact('commandes', 'paniers_programmes'));
+}
+
+public function changerStatut(Request $request, $id)
 {
     $commande = Commande::findOrFail($id);
 
-    $commande->statut = $request->statut;
+    $commande->statut_retrait = $request->statut;
     $commande->save();
 
     return back()->with('success', 'Statut mis à jour.');
 }
+
 public function recuperee($id)
 {
     $commande = Commande::findOrFail($id);
