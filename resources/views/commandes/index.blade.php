@@ -18,10 +18,12 @@
             </a>
         </div>
 
-    </div>
+    </div> {{-- fermeture du bloc principal --}}
 </x-app-layout>
 
+{{-- On arrête proprement ici --}}
 @php return; @endphp
+
 @endif
 
 
@@ -100,6 +102,7 @@
     </a>
 </div>
 
-</div>
+</div> {{-- fermeture du bloc principal --}}
 
 </x-app-layout>
+
