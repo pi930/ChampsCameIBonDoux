@@ -45,10 +45,12 @@
 
        <td>
     @if($c->statut_retrait === 'recupere')
-        <span style="color:green;">Récupérée</span>
-    @else
-        <span style="color:orange;">En attente</span>
-    @endif
+    <span style="color:green;">Récupérée</span>
+@elseif($c->statut_retrait === 'pret')
+    <span style="color:blue;">Prête</span>
+@else
+    <span style="color:orange;">En attente</span>
+@endif
 </td>
 
 

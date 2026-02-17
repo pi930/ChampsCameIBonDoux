@@ -30,23 +30,14 @@
                                 </td>
 
                                 <td class="px-4 py-2 border text-center">
-                                    @if ($commande->statut_retrait === 'en_attente')
-                                        <span class="px-2 py-1 text-sm bg-yellow-200 text-yellow-800 rounded">
-                                            En attente
-                                        </span>
-                                    @elseif ($commande->statut_retrait === 'pret')
-                                        <span class="px-2 py-1 text-sm bg-blue-200 text-blue-800 rounded">
-                                            Prête
-                                        </span>
-                                    @elseif ($commande->statut_retrait === 'recuperee')
-                                        <span class="px-2 py-1 text-sm bg-green-200 text-green-800 rounded">
-                                            Récupérée
-                                        </span>
-                                    @else
-                                        <span class="px-2 py-1 text-sm bg-gray-200 text-gray-800 rounded">
-                                            Inconnu
-                                        </span>
-                                    @endif
+                                   @if($commande->statut_retrait === 'recupere')
+    <span class="...">Récupérée</span>
+@elseif($commande->statut_retrait === 'pret')
+    <span class="...">Prête</span>
+@else
+    <span class="...">En attente</span>
+@endif
+
                                 </td>
 
                                 <td class="px-4 py-2 border text-center">

@@ -9,13 +9,18 @@ class Commande extends Model
     protected $table = 'commandes';
 
     protected $fillable = [
-        'user_id',
-        'panier_id',
-        'telephone',
-        'total',
-        'formule',
-        'rendez_vous_disponible_id',
-    ];
+    'user_id',
+    'panier_id',
+    'telephone',
+    'total',
+    'formule',
+    'rendez_vous_disponible_id',
+    'statut',
+    'statut_retrait',
+    'recupere_le',
+    'pret_le',
+];
+
 
     public function user()
     {

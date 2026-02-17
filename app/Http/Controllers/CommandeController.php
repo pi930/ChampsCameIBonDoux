@@ -109,13 +109,15 @@ class CommandeController extends Controller
 
     // Création de la commande + récupération dans une variable
     $commande = Commande::create([
-        'user_id' => $user->id,
-        'panier_id' => $panier->id,
-        'telephone' => $user->telephone,
-        'total' => $panierTotal,
-        'formule' => $formule,
-        'rendez_vous_disponible_id' => $rendezvousId,
-    ]);
+    'user_id' => $user->id,
+    'panier_id' => $panier->id,
+    'telephone' => $user->telephone,
+    'total' => $panierTotal,
+    'formule' => $formule,
+    'rendez_vous_disponible_id' => $rendezvousId,
+    'statut' => 'paye',              // ← IMPORTANT
+    'statut_retrait' => 'attente',   // ← IMPORTANT
+]);
 
     // Gestion des paniers programmés
     if ($formule === '4_paniers') {
@@ -145,9 +147,10 @@ class CommandeController extends Controller
 {
     // Commandes payées (statut = 'paye')
     $commandes = Commande::where('statut', 'paye')
-        ->with(['user', 'panier.produits', 'rendezVous'])
-        ->orderBy('created_at', 'desc')
-        ->get();
+    ->with(['user', 'panier.produits', 'rendezVous'])
+    ->orderBy('created_at', 'desc')
+    ->get();
+
 
     // Paniers programmés
     $paniers_programmes = Panier::where('type', 'panier_programme')
