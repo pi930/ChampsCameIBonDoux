@@ -12,12 +12,13 @@
         <th>Rendez-vous</th>
         <th>Formule</th>
         <th>Date</th>
+        <th>Statut</th>
+        <th>Actions</th>
     </tr>
 
     @foreach($commandes as $c)
     <tr>
         <td>{{ $c->user->name }}</td>
-
 
         <td>
             @foreach($c->panier->produits as $p)
@@ -41,6 +42,29 @@
         </td>
 
         <td>{{ $c->created_at->format('d/m/Y') }}</td>
+
+        <td>
+            @if($c->statut === 'recupere')
+                <span style="color:green;">Récupérée</span>
+            @else
+                <span style="color:orange;">En attente</span>
+            @endif
+        </td>
+
+        <td>
+            <form action="{{ route('admin.commandes.statut', $c->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                @if($c->statut !== 'recupere')
+                    <button name="statut" value="recupere" style="color:green;">Récupéré</button>
+                @endif
+
+                @if($c->statut !== 'attente')
+                    <button name="statut" value="attente" style="color:orange;">En attente</button>
+                @endif
+            </form>
+        </td>
     </tr>
     @endforeach
 </table>

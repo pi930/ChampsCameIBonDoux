@@ -108,6 +108,10 @@ Route::post('/produits-vendre', [ProduitVendreController::class, 'store'])
         // Récapitulatif commandes
         Route::get('/commandes', [DashboardController::class, 'commandes'])->name('commandes');
     });
+Route::put('/admin/commandes/{id}/statut', [CommandeController::class, 'changerStatut'])
+    ->name('admin.commandes.statut');
+Route::get('/commande-recuperee/{id}', [CommandeController::class, 'recuperee'])
+    ->name('commande.recuperee');
 
 
 require __DIR__.'/auth.php';

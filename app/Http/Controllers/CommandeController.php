@@ -151,4 +151,20 @@ class CommandeController extends Controller
     {
         return redirect()->route('paiement')->with('error', 'Paiement annulé.');
     }
+    public function changerStatut(Request $request, $id)
+{
+    $commande = Commande::findOrFail($id);
+
+    $commande->statut = $request->statut;
+    $commande->save();
+
+    return back()->with('success', 'Statut mis à jour.');
+}
+public function recuperee($id)
+{
+    $commande = Commande::findOrFail($id);
+
+    return view('commandes.recuperee', compact('commande'));
+}
+
 }
