@@ -24,78 +24,81 @@
 @php return; @endphp
 @endif
 
-    {{-- Informations personnelles --}}
-    <div class="p-4 border rounded-lg bg-gray-50 mb-8">
-        <h3 class="text-xl font-semibold mb-3">Vos informations</h3>
 
-        <p class="mb-2"><strong>Nom :</strong> {{ $commande->user->name }}</p>
-        <p class="mb-2"><strong>Email :</strong> {{ $commande->user->email }}</p>
+{{-- Informations personnelles --}}
+<div class="p-4 border rounded-lg bg-gray-50 mb-8">
+    <h3 class="text-xl font-semibold mb-3">Vos informations</h3>
 
-        @if($commande->user->telephone)
-            <p class="mb-2"><strong>Téléphone :</strong> {{ $commande->user->telephone }}</p>
-        @endif
+    <p class="mb-2"><strong>Nom :</strong> {{ $commande->user->name }}</p>
+    <p class="mb-2"><strong>Email :</strong> {{ $commande->user->email }}</p>
+
+    @if($commande->user->telephone)
+        <p class="mb-2"><strong>Téléphone :</strong> {{ $commande->user->telephone }}</p>
+    @endif
+</div>
+
+
+{{-- Récapitulatif commande --}}
+<div class="border rounded-lg p-4 bg-gray-50">
+
+    <div class="flex justify-between items-center mb-3">
+        <h3 class="text-xl font-semibold">
+            Commande #{{ $commande->id }}
+        </h3>
+
+        <span class="text-sm text-gray-600">
+            {{ $commande->created_at->format('d/m/Y') }}
+        </span>
     </div>
 
-    {{-- Récapitulatif commande --}}
-    <div class="border rounded-lg p-4 bg-gray-50">
+    <p class="mb-2">
+        <strong>Total :</strong>
+        {{ number_format($commande->total, 2, ',', ' ') }} €
+    </p>
 
-        <div class="flex justify-between items-center mb-3">
-            <h3 class="text-xl font-semibold">
-                Commande #{{ $commande->id }}
-            </h3>
+    <p class="mb-2">
+        <strong>Formule :</strong>
+        @if($commande->formule === '4_paniers')
+            4 paniers (1 mois) — 105 €
+        @else
+            Panier simple — 30 €
+        @endif
+    </p>
 
-            <span class="text-sm text-gray-600">
-                {{ $commande->created_at->format('d/m/Y') }}
-            </span>
+    @if($commande->rendezVous)
+        <p class="mb-2">
+            <strong>Rendez-vous :</strong>
+            {{ \Carbon\Carbon::parse($commande->rendezVous->date)->format('d/m/Y') }}
+            à
+            {{ substr($commande->rendezVous->heure, 0, 5) }}
+        </p>
+    @endif
+
+    @if($commande->panier && $commande->panier->produits->isNotEmpty())
+        <div class="mt-4">
+            <h4 class="font-semibold mb-2">Produits :</h4>
+
+            <ul class="list-disc pl-6 space-y-1">
+                @foreach($commande->panier->produits as $produit)
+                    <li>
+                        {{ $produit->nom }}
+                        — {{ number_format($produit->pivot->prix ?? 0, 2, ',', ' ') }} €
+                        × {{ $produit->pivot->quantite ?? 1 }}
+                    </li>
+                @endforeach
+            </ul>
         </div>
+    @endif
 
-        <p class="mb-2">
-            <strong>Total :</strong>
-            {{ number_format($commande->total, 2, ',', ' ') }} €
-        </p>
+</div>
 
-        <p class="mb-2">
-            <strong>Formule :</strong>
-            @if($commande->formule === '4_paniers')
-                4 paniers (1 mois) — 105 €
-            @else
-                Panier simple — 30 €
-            @endif
-        </p>
 
-        @if($commande->rendezVous)
-            <p class="mb-2">
-                <strong>Rendez-vous :</strong>
-                {{ \Carbon\Carbon::parse($commande->rendezVous->date)->format('d/m/Y') }}
-                à
-                {{ substr($commande->rendezVous->heure, 0, 5) }}
-            </p>
-        @endif
-
-        @if($commande->panier && $commande->panier->produits->isNotEmpty())
-            <div class="mt-4">
-                <h4 class="font-semibold mb-2">Produits :</h4>
-
-                <ul class="list-disc pl-6 space-y-1">
-                    @foreach($commande->panier->produits as $produit)
-                        <li>
-                            {{ $produit->nom }}
-                            — {{ number_format($produit->pivot->prix ?? 0, 2, ',', ' ') }} €
-                            × {{ $produit->pivot->quantite ?? 1 }}
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-    </div>
-
-    <div class="text-center mt-8">
-        <a href="{{ route('dashboard') }}"
-           class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
-            Retour à mon espace
-        </a>
-    </div>
+<div class="text-center mt-8">
+    <a href="{{ route('dashboard') }}"
+       class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">
+        Retour à mon espace
+    </a>
+</div>
 
 </div>
 
