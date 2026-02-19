@@ -71,6 +71,12 @@
     @if($c->statut_retrait !== 'attente')
         <button name="statut" value="attente" style="color:orange;">En attente</button>
     @endif
+    @if($c->statut_retrait === 'recupere')
+    <a href="{{ route('commande.recuperee', $c->id) }}"
+       style="color:green; font-weight:bold; display:inline-block; margin-top:5px;">
+        Voir reçu retrait
+    </a>
+@endif
 </form>
         </td>
     </tr>
