@@ -170,6 +170,13 @@ public function changerStatut(Request $request, $id)
 
     return back()->with('success', 'Statut mis à jour.');
 }
+public function show($id)
+{
+    $commande = Commande::with(['panier.produits'])->findOrFail($id);
+
+    return view('commandes.show', compact('commande'));
+}
+
 
 public function recuperee($id)
 {

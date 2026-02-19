@@ -71,6 +71,10 @@ Route::middleware(['auth'])->group(function () {
     ->name('commande.recuperee');
     // Rendez-vous utilisateur
     Route::get('/rendezvous', [RendezVousController::class, 'index']) ->name('rendezvous.index');
+   Route::get('/commande/{id}', [CommandeController::class, 'show'])
+    ->name('commande.show');
+
+
 });
 // Routes admin
 Route::middleware(['auth', 'is_admin'])

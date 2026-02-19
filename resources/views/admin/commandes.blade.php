@@ -57,17 +57,21 @@
 
         <td>
             <form action="{{ route('admin.commandes.statut', $c->id) }}" method="POST">
-                @csrf
-                @method('PUT')
+    @csrf
+    @method('PUT')
 
-                @if($c->statut_retrait !== 'recupere')
-                    <button name="statut" value="recupere" style="color:green;">Récupéré</button>
-                @endif
+    @if($c->statut_retrait !== 'recupere')
+        <button name="statut" value="recupere" style="color:green;">Récupéré</button>
+    @endif
 
-               @if($c->statut_retrait !== 'attente')
-                    <button name="statut" value="attente" style="color:orange;">En attente</button>
-                @endif
-            </form>
+    @if($c->statut_retrait !== 'pret')
+        <button name="statut" value="pret" style="color:blue;">Prête</button>
+    @endif
+
+    @if($c->statut_retrait !== 'attente')
+        <button name="statut" value="attente" style="color:orange;">En attente</button>
+    @endif
+</form>
         </td>
     </tr>
     @endforeach

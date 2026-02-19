@@ -49,10 +49,11 @@
                                 </td>
 
                                 <td class="px-4 py-2 border text-center">
-                                    <a href="{{ route('commande.recuperee', $commande->id) }}"
-                                       class="text-blue-600 hover:text-blue-800 underline">
-                                        Voir la commande
-                                    </a>
+                                    <a href="{{ route('commande.show', $commande->id) }}"
+   class="text-blue-600 hover:text-blue-800 underline">
+    Voir la commande
+</a>
+
                                 </td>
                             </tr>
                         @endforeach
