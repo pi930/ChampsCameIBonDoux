@@ -10,7 +10,7 @@ class RendezVousController extends Controller
     public function index()
     {
         $disponibles = RendezVousDisponible::where('est_disponible', true)
-    ->where('date', '>=', now()->toDateString())
+    ->whereDate('date', '>=', today('Europe/Paris'))
     ->orderBy('date')
     ->orderBy('heure')
     ->get();
