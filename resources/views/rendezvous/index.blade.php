@@ -12,7 +12,7 @@
             <label class="flex items-center space-x-3 p-3 border rounded hover:bg-gray-50">
                 <input type="radio" name="rendezvous_id" value="{{ $rdv->id }}" class="h-5 w-5 text-blue-600">
                 <span class="text-lg">
-                    {{ \Carbon\Carbon::parse($rdv->date)->translatedFormat('l d F') }}
+                      {{ \Carbon\Carbon::parse($rdv->date)->locale('fr')->isoFormat('dddd D MMMM') }}
                     à {{ $rdv->heure }}
                 </span>
             </label>
