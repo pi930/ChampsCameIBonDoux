@@ -53,7 +53,7 @@
           class="border rounded-xl p-6 shadow hover:shadow-lg transition bg-white">
         
         <h3 class="text-xl font-semibold mb-2">Formule 1 mois</h3>
-        <p class="text-gray-600 mb-4">Accès complet pendant 30 jours</p>
+        <p class="text-gray-600 mb-4">1 panier</p>
 
         <div class="text-3xl font-bold mb-6">30 €</div>
 
