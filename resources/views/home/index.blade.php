@@ -19,10 +19,11 @@
     </div>
 
     <div class="mt-12">
-        <img src="/images/marechage.jpg"
-             class="rounded-xl shadow w-full h-80 object-cover"
-             alt="Maraîchage">
-    </div>
+    <img src="{{ asset('images/marechage.jpg') }}"
+         class="rounded-xl shadow w-full h-80 object-cover"
+         alt="Maraîchage">
+</div>
+
 
 </div>
 
