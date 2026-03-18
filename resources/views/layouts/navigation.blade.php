@@ -35,7 +35,7 @@
                             <a href="{{ route('profile.edit') }}" class="block py-1 hover:text-green-700">Profil</a>
                             <a href="{{ route('commandes.index') }}" class="block py-1 hover:text-green-700">Commandes</a>
                             <a href="{{ route('contact') }}" class="block py-1 hover:text-green-700">Contact</a>
-                            <a href="{{ route('rendezvous.index') }}" class="block py-1 hover:text-green-700">Rendez-vous</a>
+                             <a href="{{ route('rendezvous.mes') }}" class="block py-1 hover:text-green-700">Rendez-vous</a>
 
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -71,7 +71,7 @@
             <a href="{{ route('profile.edit') }}" class="block">Profil</a>
             <a href="{{ route('commandes.index') }}" class="block">Commandes</a>
             <a href="{{ route('contact') }}" class="block">Contact</a>
-            <a href="{{ route('rendezvous.index') }}" class="block">Rendez-vous</a>
+            <a href="{{ route('rendezvous.mes') }}" class="block py-1 hover:text-green-700">Rendez-vous</a>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

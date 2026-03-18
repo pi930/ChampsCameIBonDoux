@@ -28,6 +28,15 @@ return view('rendezvous.index', compact('disponibles'));
 
     return redirect()->route('panier.recap');
 }
+public function mesRendezVous()
+{
+    $rendezvous = RendezVous::where('user_id', auth()->id())
+        ->orderBy('date')
+        ->orderBy('heure')
+        ->get();
+
+    return view('rendezvous.mes', compact('rendezvous'));
+}
 
 
 }

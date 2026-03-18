@@ -74,7 +74,8 @@ Route::middleware(['auth'])->group(function () {
    Route::get('/commande/{id}', [CommandeController::class, 'show'])
     ->name('commande.show');
 
-
+    Route::get('/mes-rendezvous', [RendezVousController::class, 'mesRendezVous'])
+        ->name('rendezvous.mes');
 });
 // Routes admin
 Route::middleware(['auth', 'is_admin'])
@@ -110,6 +111,12 @@ Route::post('/produits-vendre', [ProduitVendreController::class, 'store'])
         // Gestion des rendez-vous
         Route::get('/rendez-vous', [AdminRendezVousController::class, 'index'])->name('rendezvous.index');
         Route::post('/rendez-vous', [AdminRendezVousController::class, 'store'])->name('rendezvous.store');
+        Route::middleware('auth')->group(function () {
+    Route::get('/mes-rendezvous', [RendezVousController::class, 'mesRendezVous'])
+        ->name('rendezvous.mes');
+});
+
+
 
         // Récapitulatif commandes
         Route::get('/commandes', [DashboardController::class, 'commandes'])->name('commandes');
