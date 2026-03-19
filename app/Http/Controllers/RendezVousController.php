@@ -24,10 +24,24 @@ return view('rendezvous.index', compact('disponibles'));
         'rendezvous_id' => 'required|exists:rendez_vous_disponibles,id'
     ]);
 
-    session(['rendezvous_id' => $request->rendezvous_id]);
+    // On récupère le créneau choisi
+    $dispo = RendezVousDisponible::findOrFail($request->rendezvous_id);
 
-    return redirect()->route('panier.recap');
+    // On crée le rendez-vous pour l'utilisateur
+        $rdv = RendezVous::create([
+    'user_id' => auth()->id(),
+    'date' => $dispo->date,
+    'heure' => $dispo->heure,
+    'statut' => 'confirmé',
+    'rendez_vous_disponible_id' => $dispo->id,   // ← LA LIGNE QUI MANQUAIT
+]);
+
+    // On marque le créneau comme non disponible
+    $dispo->update(['est_disponible' => false]);
+
+    return redirect()->route('rendezvous.mes');
 }
+
 public function mesRendezVous()
 {
     $rendezvous = RendezVous::where('user_id', auth()->id())
