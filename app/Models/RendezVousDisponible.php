@@ -21,6 +21,11 @@ class RendezVousDisponible extends Model
     {
         return $this->hasOne(RendezVous::class, 'rendez_vous_disponible_id');
     }
+    public function scopeLibres($query)
+{
+    return $query->where('est_disponible', true);
+}
+
 }
 
 

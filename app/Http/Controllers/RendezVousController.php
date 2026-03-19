@@ -10,14 +10,13 @@ class RendezVousController extends Controller
 {
     public function index()
     {
-        $disponibles = RendezVousDisponible::where('est_disponible', true)
-            ->whereDate('date', '>=', today('Europe/Paris'))
-            ->orderBy('date')
-            ->orderBy('heure')
-            ->get();
+        $disponibles = RendezVousDisponible::libres()
+        ->orderBy('date')
+        ->orderBy('heure')
+        ->get();
 
-        return view('rendezvous.index', compact('disponibles'));
-    }
+       return view('rendezvous.choisir', compact('disponibles'));
+}
 
     public function choisir(Request $request)
     {
