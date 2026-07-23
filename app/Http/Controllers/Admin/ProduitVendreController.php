@@ -41,18 +41,16 @@ class ProduitVendreController extends Controller
                 continue;
             }
 
-            ProduitVendre::updateOrCreate(
-                ['semi_id' => $semiId],
-                [
-                    'nom'        => $semi->produit->nom,
-                    'prix'       => 2.5, // tu pourras remplacer par $semi->produit->prix si tu ajoutes la colonne
-                    'categorie'  => 'Légumes', // idem
-                    'unite'      => 'kg', // idem
-                    'description'=> '',
-                    'image'      => $semi->produit->image ?? '',
-                    'actif'      => true,
-                ]
-            );
+           ProduitVendre::updateOrCreate(
+    ['semi_id' => $semiId],
+    [
+        'nom'        => $semi->produit->nom,
+        'description'=> '',
+        'image'      => $semi->produit->image ?? '',
+        'actif'      => true,
+    ]
+);
+
         }
 
         return redirect()

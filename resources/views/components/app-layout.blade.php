@@ -11,7 +11,13 @@
 
 <body class="bg-gray-100 font-sans antialiased">
 
-   @include('layouts.navigation')
+    <!-- Bande jaune forcé -->
+    <div style="background-color: #fde047;"
+         class="w-full text-gray-900 py-2 text-center font-semibold shadow">
+        ChampsCameIBonDoux — Produits bio de saison 🌱
+    </div>
+
+    @include('layouts.navigation')
 
     <main class="min-h-screen">
         {{ $slot }}
@@ -19,4 +25,5 @@
 
 </body>
 </html>
+
 

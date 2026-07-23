@@ -1,6 +1,6 @@
 <x-app-layout>
 
-<div class="max-w-5xl mx-auto py-12">
+<div class="max-w-5xl mx-auto py-12 bg-yellow-100 rounded-xl shadow">
 
     <div class="text-center">
         <h1 class="text-4xl font-bold text-gray-800">
