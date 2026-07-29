@@ -34,12 +34,13 @@ RUN composer install --no-dev --optimize-autoloader
 RUN npm install
 RUN npm run build
 
-# Générer .env + clé Laravel
-RUN cp .env.example .env
-RUN php artisan key:generate
+# ⚠️ IMPORTANT : ne jamais générer .env dans Docker
+# Render fournit les variables d’environnement automatiquement
+# RUN cp .env.example .env
+# RUN php artisan key:generate
 
 # Donner les permissions
 RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 775 storage bootstrap/cache
 
 EXPOSE 80
-
