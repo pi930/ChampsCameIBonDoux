@@ -13,7 +13,7 @@
     <label class="flex items-center space-x-4 p-3 border rounded hover:bg-gray-50 cursor-pointer">
 
         <img
-            src="{{ asset('storage/produits/' . $produit->image) }}"
+            src="{{ Storage::url($produit->image) }}"
             alt="{{ $produit->nom }}"
             class="h-14 w-14 object-cover rounded"
         >

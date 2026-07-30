@@ -13,23 +13,31 @@
             <div class="space-y-3">
                 @foreach($semis as $s)
                     <label class="flex items-center justify-between bg-gray-50 hover:bg-gray-100 p-3 rounded-lg border border-gray-200 cursor-pointer">
-                        <div class="flex items-center gap-3">
-                            <input
-                                type="checkbox"
-                                name="semis[]"
-                                value="{{ $s->id }}"
-                                @checked($s->selectionne)
-                                class="h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-                            >
-                            
-                            <span class="text-gray-800 font-medium">
-                                {{ $s->produit->nom }}
-                            </span>
-                        </div>
+          <div class="flex items-center gap-3">
 
-                        <span class="text-sm text-gray-500">
-                            #{{ $s->id }}
-                        </span>
+    <img
+        src="{{ Storage::url($s->image) }}"
+        alt="{{ $s->produit->nom }}"
+        class="h-12 w-12 object-cover rounded"
+    >
+
+    <input
+        type="checkbox"
+        name="semis[]"
+        value="{{ $s->id }}"
+        @checked($s->selectionne)
+        class="h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+    >
+
+    <span class="text-gray-800 font-medium">
+        {{ $s->produit->nom }}
+    </span>
+</div>
+
+<span class="text-sm text-gray-500">
+    #{{ $s->id }}
+</span>
+
                     </label>
                 @endforeach
             </div>

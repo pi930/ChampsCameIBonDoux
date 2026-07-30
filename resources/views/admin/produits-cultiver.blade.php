@@ -18,10 +18,11 @@
                         <div class="flex items-center gap-3">
 
                             <img
-                                src="{{ asset('storage/produits/' . $p->image) }}"
-                                alt="{{ $p->nom }}"
-                                class="h-12 w-12 object-cover rounded"
-                            >
+    src="{{ Storage::url($p->image) }}"
+    alt="{{ $p->nom }}"
+    class="h-12 w-12 object-cover rounded"
+>
+
 
                             <input
                                 type="checkbox"
