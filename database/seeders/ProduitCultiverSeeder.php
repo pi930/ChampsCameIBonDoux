@@ -10,21 +10,23 @@ class ProduitCultiverSeeder extends Seeder
 {
     public function run()
     {
-        ProduitCultiver::truncate();
+        // Récupère toutes les images du dossier storage/app/public/produits_cultiver
+        $files = Storage::disk('public')->files('produits');
 
-        $fichiers = Storage::disk('public')->files('produits');
+        foreach ($files as $file) {
 
-        foreach ($fichiers as $fichier) {
-            $nomFichier = basename($fichier);
+            // Nom du fichier sans extension
+            $filename = pathinfo($file, PATHINFO_FILENAME);
 
-            $nomProduit = ucwords(
-                str_replace(['-', '_'], ' ', pathinfo($nomFichier, PATHINFO_FILENAME))
-            );
+            // Exemple : "tomate_rouge" → "Tomate rouge"
+            $nom = ucfirst(str_replace('_', ' ', $filename));
 
             ProduitCultiver::create([
-                'nom' => $nomProduit,
-                'image' => $nomFichier,
+                'nom'        => $nom,
+                'image'      => $file, // 🔥 Chemin correct vers l’image
+                'selectionne'=> false,
             ]);
         }
     }
 }
+

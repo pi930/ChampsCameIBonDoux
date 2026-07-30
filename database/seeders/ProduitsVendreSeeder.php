@@ -10,6 +10,7 @@ class ProduitsVendreSeeder extends Seeder
 {
     public function run()
     {
+        // Récupère tous les fichiers du dossier storage/app/public/produits
         $files = Storage::disk('public')->files('produits');
 
         foreach ($files as $file) {
@@ -21,16 +22,18 @@ class ProduitsVendreSeeder extends Seeder
             $nom = ucfirst(str_replace('_', ' ', $filename));
 
             ProduitVendre::create([
-                'semi_id' => null,               // pas lié à un semi
-                'nom' => $nom,
-                'prix' => 5,                     // prix par défaut (à ajuster)
-                'categorie' => 'Légume',         // catégorie par défaut
-                'unite' => 'pièce',              // unité par défaut
+                'semi_id'     => null,
+                'nom'         => $nom,
+                'prix'        => 5,
+                'categorie'   => 'Légume',
+                'unite'       => 'pièce',
                 'description' => 'Produit cultivé disponible à la vente.',
-                'image' => null,
-                'actif' => true,                 // visible dans l’admin
+                
+                // 🔥 Chemin correct vers l’image
+                'image'       => $file,  // ex: "produits/tomate_rouge.jpg"
+
+                'actif'       => true,
             ]);
         }
     }
 }
-
