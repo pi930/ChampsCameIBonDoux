@@ -17,7 +17,6 @@ class SemisSeeder extends Seeder
                 'produit_id' => $p->id,
                 'date_semis' => now(),
                 'quantite' => 0,
-                'image' => null
             ]);
         }
     }
